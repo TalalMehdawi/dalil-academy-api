@@ -50,7 +50,10 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IEnrollmentRepository,EnrollmentRepository>();
 builder.Services.AddScoped<IEnrollmentService,EnrollmentService>();
-
+builder.Services.AddHttpClient<ICurrencyService, CurenccyService>(client =>
+{
+    client.BaseAddress=new Uri($"{builder.Configuration["ExchangeRate:BaseUrl"]}{builder.Configuration["ExchangeRate:ApiKey"]}/");
+});
 
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
@@ -78,7 +81,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = jwt.Issuer,
+        ValidIssuer = jwt!.Issuer,
         ValidAudience = jwt.Audience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
         ClockSkew = TimeSpan.FromMinutes(1)

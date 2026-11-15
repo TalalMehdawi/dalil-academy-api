@@ -22,6 +22,7 @@ public class GlobalExceptionHandler(
             UnauthorizedAccessException => (401, "Unauthorized"),
             ArgumentException => (400, "Bad Request"),
             InvalidFileException => (400, "Invalid File"),
+            HttpRequestException =>(400,"one of the Currencies is not Valid"),
             _ => (500, "An unexpected error occurred")
         };
         if (status == 500) logger.LogError(exception, "Unhandled exception");
